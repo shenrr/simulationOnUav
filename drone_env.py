@@ -7,7 +7,7 @@ from PIL import Image
 
 import AirSimClient
 
-goal_threshold = 3
+goal_threshold = 12
 np.set_printoptions(precision=3, suppress=True)
 IMAGE_VIEW = True
 
@@ -26,7 +26,7 @@ class drone_env:#无人机控制
 		self.client.enableApiControl(True)
 		self.client.armDisarm(True)
 		self.client.moveToPosition(self.start.tolist()[0],self.start.tolist()[1],self.start.tolist()[2],5,max_wait_seconds = 10)
-		time.sleep(2)
+		time.sleep(1)
 		
 		
 	def isDone(self):
@@ -40,11 +40,8 @@ class drone_env:#无人机控制
 		temp.is_rate = not forward
 		sta=self.client.getVelocity()
 
-		#print("valo")
-		#print(sta2[2])
-		#print("-------")
 		self.client.moveByVelocity(diff[0], diff[1], diff[2]*0.8, 1 ,drivetrain = AirSimClient.DrivetrainType.ForwardOnly, yaw_mode = temp)
-		time.sleep(0.5)
+		time.sleep(0.25)
 		
 		return 0
 		
@@ -64,7 +61,7 @@ class drone_env:#无人机控制
 # continuous control
 		
 class drone_env_heightcontrol(drone_env):
-	def __init__(self,start = [-23,0,-8],aim = [-23,125,-8],scaling_factor = 2,img_size = [64,64]):
+	def __init__(self,start = [-23,0,-8],aim = [-23,125,-8],scaling_factor = 1,img_size = [64,64]):
 		drone_env.__init__(self,start,aim)
 		self.scaling_factor = scaling_factor
 		self.aim = np.array(aim)
@@ -133,13 +130,11 @@ class drone_env_heightcontrol(drone_env):
 
 		dx = action[0] * self.scaling_factor
 		dy = action[1] * self.scaling_factor
-		print("dx: {}".format(dx).ljust(20, " "), "dy: {}".format(dy).ljust(20, " "),
-			  "totalsuccess: {}".format(self.totalsuccess).ljust(20, " "))
+
 
 		#angleloss=abs(initDiretion-self.cacheAngle)
 		pos = self.state[1][2]
 		dz =self.aim[2]-pos
-		#print ("direction: ",dx,dy,dz,end = "\r")
 		drone_env.moveByDist(self,[dx,dy,dz],forward = True)
 		state_ = self.getState()
 		#sta = self.client.getVelocity()
@@ -172,6 +167,7 @@ class drone_env_heightcontrol(drone_env):
 
 				reward2 = 500
 				info = "success"
+				done = True
 				self.reset_aim()
 				self.totalsuccess+=1
 				self.count=0
@@ -219,13 +215,14 @@ class drone_env_heightcontrol(drone_env):
 		#print("two", vel[0], vel[1], vel[2])
 
 		img = copy.deepcopy(state_[0])
-		relativeState = [np.array([img,self.imagecache1,self.imagecache2]).transpose((1,2,0)), np.array([self.aim[0] - self.state[1][0], self.aim[1] - self.state[1][1],vel[0], vel[1]])]
+		relativeState = [np.array(img), np.array([self.aim[0] - self.state[1][0], self.aim[1] - self.state[1][1],vel[0], vel[1]])]
 		self.imagecache2=self.imagecache1
 		self.imagecache1=img
 		#print(relativeState[0])
 
 		#reward /= 50
 		#print(reward2)
+		print("与目标距离: {} ".format(dis_))
 		return relativeState,reward2,done,info
 
 	def isDone(self):
@@ -234,6 +231,9 @@ class drone_env_heightcontrol(drone_env):
 		if distance(self.aim,pos) < self.threshold:
 			return True
 		return False
+
+
+
 
 	def rewardf(self,state,state_,dx,dy):
 		pos = state[1][2]
@@ -270,8 +270,6 @@ class drone_env_heightcontrol(drone_env):
 		
 		responses = self.client.simGetImages([AirSimClient.ImageRequest(0, AirSimClient.AirSimImageType.DepthPerspective, True, False)])
 		img1d = np.array(responses[0].image_data_float, dtype=np.float)
-		print("this is information of picture.")
-		print(img1d.shape)
 
 		img2d = np.reshape(img1d, (responses[0].height, responses[0].width))
 
@@ -281,16 +279,15 @@ class drone_env_heightcontrol(drone_env):
 		responses2 = self.client.simGetImages(
 			[AirSimClient.ImageRequest(0, AirSimClient.AirSimImageType.Segmentation, True, False)])
 		img1d2 = np.array(responses2[0].image_data_float, dtype=np.float)
-		print("this is information of picture22222.")
-		print(img1d2)
 
 
 		img2d2 = np.reshape(img1d2, (responses[0].height, responses[0].width))
 		image2= Image.fromarray(img2d2)
 		im_final2 = np.array(image2.resize((64, 64)).convert('P'), dtype=np.float) / 255
 
+
 		if IMAGE_VIEW:
-			cv2.imshow("view",img2d2)
+			cv2.imshow("view",im_final)
 			key = cv2.waitKey(1) & 0xFF;
 		return im_final
 		
@@ -304,8 +301,6 @@ def v2t(vect):
 def distance(pos1,pos2):
 	pos1 = v2t(pos1)
 	pos2 = v2t(pos2)
-
 	#dist = np.sqrt(abs(pos1[0]-pos2[0])**2 + abs(pos1[1]-pos2[1])**2 + abs(pos1[2]-pos2[2]) **2)
 	dist = np.linalg.norm(pos1-pos2)
-	#print(dist)
 	return dist
