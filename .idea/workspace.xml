@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c6e8ff32-7098-400e-a707-fb82da59d8d8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/EnergyAgent.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/drone_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/drone_env.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-    </list>
+    <list default="true" id="c6e8ff32-7098-400e-a707-fb82da59d8d8" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,11 +58,12 @@
         <counts>
           <entry key="dummy" value="2" />
           <entry key="py" value="2810" />
+          <entry key="txt" value="190" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PLAIN_TEXT" value="2" />
+          <entry key="PLAIN_TEXT" value="192" />
           <entry key="Python" value="2810" />
         </counts>
       </usages-collector>
@@ -89,8 +84,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/EnergyAgent.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-814">
-              <caret line="75" column="34" lean-forward="true" selection-start-line="75" selection-start-column="34" selection-end-line="75" selection-end-column="34" />
+            <state relative-caret-position="352">
+              <caret line="128" column="21" lean-forward="true" selection-start-line="128" selection-start-column="21" selection-end-line="128" selection-end-column="21" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
                 <marker date="1574232865022" expanded="true" signature="562:583" ph="..." />
@@ -236,6 +231,11 @@
     </findStrings>
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="yuchen" />
+      </list>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
@@ -382,6 +382,14 @@
       <option name="presentableId" value="Default" />
       <updated>1550564823934</updated>
     </task>
+    <task id="LOCAL-00001" summary="1、改正实际避障方向相反问题&#10;2、去除缓存前驱数组机制&#10;3、将恐惧调为3，每50帧重定向&#10;4、长逻辑函数化方便理解&#10;5、成功距离设为12&#10;6、缩短判距离区&#10;考虑提升：&#10;1、已出现成功情况，考虑记录到永久外存&#10;2、飞机使用movebydist会出现自旋最好更改为角度控制&#10;3、slam机制考虑加入&#10;4、main函数可复用性不足">
+      <created>1574233381337</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1574233381337</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -416,6 +424,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="1、改正实际避障方向相反问题&#10;2、去除缓存前驱数组机制&#10;3、将恐惧调为3，每50帧重定向&#10;4、长逻辑函数化方便理解&#10;5、成功距离设为12&#10;6、缩短判距离区&#10;考虑提升：&#10;1、已出现成功情况，考虑记录到永久外存&#10;2、飞机使用movebydist会出现自旋最好更改为角度控制&#10;3、slam机制考虑加入&#10;4、main函数可复用性不足" />
+    <option name="LAST_COMMIT_MESSAGE" value="1、改正实际避障方向相反问题&#10;2、去除缓存前驱数组机制&#10;3、将恐惧调为3，每50帧重定向&#10;4、长逻辑函数化方便理解&#10;5、成功距离设为12&#10;6、缩短判距离区&#10;考虑提升：&#10;1、已出现成功情况，考虑记录到永久外存&#10;2、飞机使用movebydist会出现自旋最好更改为角度控制&#10;3、slam机制考虑加入&#10;4、main函数可复用性不足" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/premodel/checkpoint" />
@@ -518,8 +530,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/EnergyAgent.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-814">
-          <caret line="75" column="34" lean-forward="true" selection-start-line="75" selection-start-column="34" selection-end-line="75" selection-end-column="34" />
+        <state relative-caret-position="352">
+          <caret line="128" column="21" lean-forward="true" selection-start-line="128" selection-start-column="21" selection-end-line="128" selection-end-column="21" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
             <marker date="1574232865022" expanded="true" signature="562:583" ph="..." />
