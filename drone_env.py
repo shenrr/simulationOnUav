@@ -20,36 +20,34 @@ class drone_env:#无人机控制
 		self.client.enableApiControl(True)
 		self.client.armDisarm(True)
 		self.threshold = goal_threshold
-		
+
 	def reset(self):
 		self.client.reset()
 		self.client.enableApiControl(True)
 		self.client.armDisarm(True)
 		self.client.moveToPosition(self.start.tolist()[0],self.start.tolist()[1],self.start.tolist()[2],5,max_wait_seconds = 10)
 		time.sleep(1)
-		
-		
+
+
 	def isDone(self):
 		pos = self.client.getPosition()
 		if distance(self.aim,pos) < self.threshold:
 			return True
 		return False
-		
+
 	def moveByDist(self,diff, forward = False):
 		temp = AirSimClient.YawMode()
 		temp.is_rate = not forward
 		sta=self.client.getVelocity()
-
 		self.client.moveByVelocity(diff[0], diff[1], diff[2]*0.8, 1 ,drivetrain = AirSimClient.DrivetrainType.ForwardOnly, yaw_mode = temp)
 		time.sleep(0.25)
-		
 		return 0
-		
+
 	def render(self,extra1 = "",extra2 = ""):
 		pos = v2t(self.client.getPosition())
 		goal = distance(self.aim,pos)
 		print (extra1,"distance:",int(goal),"position:",pos.astype("int"),extra2)
-		
+
 	def help(self):
 		print ("drone simulation environment")
 		
@@ -99,7 +97,7 @@ class drone_env_heightcontrol(drone_env):
 		self.state = self.getState()
 		self.loseCome = 0
 		img = copy.deepcopy(self.state[0])
-		relativeState=[np.array([img,self.imagecache1,self.imagecache2]).transpose((1,2,0)), np.array([self.aim[0]-self.state[1][0],self.aim[1]-self.state[1][1],0,0])]
+		relativeState=[img, np.array([self.aim[0]-self.state[1][0],self.aim[1]-self.state[1][1],0,0])]
 		self.initDistance=np.sqrt(abs(relativeState[1][0]) ** 2 + abs(relativeState[1][1]) ** 2 )
 		self.cacheDistance=self.initDistance
 		self.dx = 0
@@ -233,8 +231,6 @@ class drone_env_heightcontrol(drone_env):
 		return False
 
 
-
-
 	def rewardf(self,state,state_,dx,dy):
 		pos = state[1][2]
 		pos_ = state_[1][2]
@@ -262,10 +258,9 @@ class drone_env_heightcontrol(drone_env):
 		#	reward2 *= 12
 
 		print("distance: {}".format(dis_).ljust(20," "),"relative position: {}".format(state_[1]-self.aim).ljust(20," "),end = "\r")
-
-
 		return reward2
-		
+
+
 	def getImg(self):
 		
 		responses = self.client.simGetImages([AirSimClient.ImageRequest(0, AirSimClient.AirSimImageType.DepthPerspective, True, False)])
@@ -276,27 +271,26 @@ class drone_env_heightcontrol(drone_env):
 		image = Image.fromarray(img2d)
 		im_final = np.array(image.resize((64, 64)).convert('L'), dtype=np.float)/255
 		im_final.resize((64,64))
-		responses2 = self.client.simGetImages(
-			[AirSimClient.ImageRequest(0, AirSimClient.AirSimImageType.Segmentation, True, False)])
-		img1d2 = np.array(responses2[0].image_data_float, dtype=np.float)
 
-
-		img2d2 = np.reshape(img1d2, (responses[0].height, responses[0].width))
-		image2= Image.fromarray(img2d2)
-		im_final2 = np.array(image2.resize((64, 64)).convert('P'), dtype=np.float) / 255
-
+		#responses2 = self.client.simGetImages([AirSimClient.ImageRequest(0, AirSimClient.AirSimImageType.Segmentation, True, False)])
+		#img1d2 = np.array(responses2[0].image_data_float, dtype=np.float)
+		#img2d2 = np.reshape(img1d2, (responses[0].height, responses[0].width))
+		#image2= Image.fromarray(img2d2)
+		#im_final2 = np.array(image2.resize((64, 64)).convert('P'), dtype=np.float) / 255
 
 		if IMAGE_VIEW:
 			cv2.imshow("view",im_final)
 			key = cv2.waitKey(1) & 0xFF;
 		return im_final
-		
+
+
 def v2t(vect):
 	if isinstance(vect,AirSimClient.Vector3r):
 		res = np.array([vect.x_val, vect.y_val, vect.z_val])
 	else:
 		res = np.array(vect)
 	return res
+
 
 def distance(pos1,pos2):
 	pos1 = v2t(pos1)

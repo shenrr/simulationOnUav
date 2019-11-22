@@ -11,9 +11,9 @@ class Actor:
         self.tau = tau
         
         self.state = tf.placeholder(tf.float32, [None, state_shape])
-        self.img = tf.placeholder(tf.float32, [None, 64, 64, 3])
+        self.img = tf.placeholder(tf.float32, [None, 64, 64, 1])
         self.post_state = tf.placeholder(tf.float32, [None, state_shape])
-        self.post_img = tf.placeholder(tf.float32, [None, 64, 64, 3])
+        self.post_img = tf.placeholder(tf.float32, [None, 64, 64, 1])
         self.Q_gradient =  tf.placeholder(tf.float32, [None, action_dim])
         
         with tf.variable_scope("actor"):
@@ -71,9 +71,7 @@ class Actor:
         
     def act(self, state):
         img, dstate = state
-
-        test=np.zeros([1,64,64,3])
-        img = np.reshape(img, [1, 64, 64, 3])
+        img = np.reshape(img, [1, 64, 64, 1])
         #img=np.add(img,test)
         dstate = np.reshape(dstate, [1, self.state_shape])
         action = self.sess.run(self.eval_net, feed_dict={self.state:dstate, self.img:img})[0]
@@ -82,8 +80,8 @@ class Actor:
     def actTarget(self, state):
         img, dstate = state
 
-        test=np.zeros([1,64,64,3])
-        img = np.reshape(img, [1, 64, 64, 3])
+        test=np.zeros([1,64,64,1])
+        img = np.reshape(img, [1, 64, 64, 1])
         #img=np.add(img,test)
         dstate = np.reshape(dstate, [1, self.state_shape])
         action = self.sess.run(self.target_net, feed_dict={self.post_state:dstate, self.post_img:img})[0]

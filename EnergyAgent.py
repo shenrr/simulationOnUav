@@ -139,6 +139,7 @@ class EnergyAgent:
             action[1] = tarY / math.sqrt(tarX * tarX + tarY * tarY)
         return action
 
+
     def weightProcess(self,state):
         # 压缩
         imageCompact = []
@@ -166,6 +167,7 @@ class EnergyAgent:
         # print(matrix)
         return matrix
 
+
     def smoothing(self,matrix):
         #转成线加平滑
         power=np.mean(matrix,axis=0)
@@ -175,6 +177,7 @@ class EnergyAgent:
         for i in range(2,62):
             smooth[i]=(power[i-2]+power[i-1]+power[i]+power[i+1]+power[i+2])/5
         return smooth
+
 
     def addWeightDependTarget(self,smooth,ax,ay,bx,by):
         alphadirect = ax * by - ay * bx

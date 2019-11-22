@@ -13,12 +13,12 @@ class Critic:
         
         # input for Q network
         self.state = tf.placeholder(tf.float32, [None, state_shape])
-        self.img = tf.placeholder(tf.float32, [None, 64, 64, 3])
+        self.img = tf.placeholder(tf.float32, [None, 64, 64, 1])
         self.action = tf.placeholder(tf.float32, [None, action_dim])
         
         #input for target network
         self.t_state = tf.placeholder(tf.float32, [None, state_shape])
-        self.t_img = tf.placeholder(tf.float32, [None, 64, 64, 3])
+        self.t_img = tf.placeholder(tf.float32, [None, 64, 64, 1])
         self.t_action = tf.placeholder(tf.float32, [None, action_dim])
         
         with tf.variable_scope("critic"):
@@ -68,7 +68,7 @@ class Critic:
         imgs, dstates = states
         dstates=dstates.reshape((1, 4))
         actions = actions.reshape((1, 2))
-        imgs=imgs.reshape((1,64,64,3))
+        imgs=imgs.reshape((1,64,64,1))
         Q_target = self.sess.run(self.target_net, feed_dict={self.t_state:dstates, self.t_action:actions, self.t_img:imgs})
         return Q_target
 
@@ -76,7 +76,7 @@ class Critic:
         imgs, dstates = states
         dstates=dstates.reshape((1, 4))
         actions = actions.reshape((1, 2))
-        imgs=imgs.reshape((1,64,64,3))
+        imgs=imgs.reshape((1,64,64,1))
         Q_target = self.sess.run(self.eval_net, feed_dict={self.state:dstates, self.action:actions, self.img:imgs})
         return Q_target
         
