@@ -4,8 +4,8 @@ import numpy as np
 import tensorflow as tf
 import time
 
-from DDPG import DDPG_agent
-from EnergyAgent import EnergyAgent
+from DDPG.DDPG import DDPG_agent
+from Energy.EnergyAgent import EnergyAgent
 from drone_env import drone_env_heightcontrol
 from Persistence import Persistence
 
@@ -14,7 +14,7 @@ DIR = os.path.join(PATH, "data")
 tf.set_random_seed(22)
 PREMODEL = True
 np.set_printoptions(precision=3, suppress=True)
-choose = "2"#input("请输入使用的模式: (1 DDPG)(2 直接规则避障)")
+choose = "1"#input("请输入使用的模式: (1 DDPG)(2 直接规则避障)")
 
 def main():
 	env = drone_env_heightcontrol(aim=None)

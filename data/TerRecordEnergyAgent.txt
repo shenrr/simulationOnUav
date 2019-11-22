@@ -2,3 +2,4 @@ time 2019-11-22 14:34:59, start new train, methodEnergyAgent
 time 2019-11-22 14:35:16, episode 1 finish, total success: 1 step: 0
 time 2019-11-22 15:00:22, start new train, methodEnergyAgent
 time 2019-11-22 15:01:57, episode 1 finish, total success: 1 step: 0
+time 2019-11-22 16:25:52, start new train, methodEnergyAgent

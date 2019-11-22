@@ -3,10 +3,10 @@ import os
 import numpy as np
 import tensorflow as tf
 
-from Actor import Actor
-from Critic import Critic
-from OUNoise import OrnsteinUhlenbeckActionNoise
-from ReplayMemory import ReplayMemory
+from DDPG.Actor import Actor
+from DDPG.Critic import Critic
+from DDPG.OUNoise import OrnsteinUhlenbeckActionNoise
+from DDPG.ReplayMemory import ReplayMemory
 
 
 class DDPG_agent:

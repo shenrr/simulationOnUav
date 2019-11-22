@@ -1,7 +1,6 @@
 import tensorflow as tf
-import numpy as np
 import os
-from DDPG import DDPG_agent
+from DDPG.DDPG import DDPG_agent
 from drone_env import drone_env_heightcontrol
 
 PATH = os.path.dirname(os.path.abspath(__file__))
